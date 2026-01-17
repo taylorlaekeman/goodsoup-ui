@@ -1,33 +1,47 @@
-import { useState } from 'react';
-import viteLogo from '/vite.svg';
-import reactLogo from './assets/react.svg';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
 import './App.css';
+import { GraphQLClient } from 'graphql-request';
+import { graphql } from './gql/gql';
+
+const queryClient = new QueryClient();
+const gqlClient = new GraphQLClient('http://localhost:3000/graphql');
 
 function App() {
-  const [count, setCount] = useState(0);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Goodsoup />
+    </QueryClientProvider>
+  );
+}
+
+const getShoppingListsDocument = graphql(/* GraphQL */ `
+  query GetShoppingLists {
+    shoppingLists {
+      id
+      createdAt
+    }
+  }
+`);
+
+function Goodsoup() {
+  const { data } = useQuery({
+    queryKey: ['getShoppingLists'],
+    queryFn: async () => gqlClient.request(getShoppingListsDocument),
+  });
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Goodsoup</h1>
+      <h2>Shopping Lists</h2>
+      <ul>
+        {data?.shoppingLists.map((list) => (
+          <li key={list.id}>{list.createdAt}</li>
+        ))}
+      </ul>
     </>
   );
 }
