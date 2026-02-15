@@ -2,11 +2,15 @@ import type { ShoppingList } from './gql/graphql';
 
 export function ShoppingLists({
   lists,
+  onCreate = () => {
+    /* do nothing */
+  },
   onSelect = () => {
     /* do nothing */
   },
 }: {
   lists?: ShoppingList[];
+  onCreate?: () => void;
   onSelect?: (input: string) => void;
 }) {
   return (
@@ -21,6 +25,7 @@ export function ShoppingLists({
           </li>
         ))}
       </ul>
+      <button onClick={onCreate}>+ Add</button>
     </>
   );
 }
