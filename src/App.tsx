@@ -4,11 +4,13 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import './App.css';
-import { GraphQLClient } from 'graphql-request';
+import { useState } from 'react';
 import { graphql } from './gql/gql';
+import { gqlClient } from './gqlClient';
+import { ShoppingList } from './ShoppingList';
+import { ShoppingLists } from './ShoppingLists';
 
 const queryClient = new QueryClient();
-const gqlClient = new GraphQLClient('http://localhost:3000/graphql');
 
 function App() {
   return (
@@ -18,32 +20,66 @@ function App() {
   );
 }
 
-const getShoppingListsDocument = graphql(/* GraphQL */ `
-  query GetShoppingLists {
-    shoppingLists {
-      id
-      createdAt
-    }
-  }
-`);
-
 function Goodsoup() {
   const { data } = useQuery({
     queryKey: ['getShoppingLists'],
     queryFn: async () => gqlClient.request(getShoppingListsDocument),
   });
 
+  const [listId, setListId] = useState<string | undefined>();
   return (
     <>
       <h1>Goodsoup</h1>
-      <h2>Shopping Lists</h2>
-      <ul>
-        {data?.shoppingLists.map((list) => (
-          <li key={list.id}>{list.createdAt}</li>
-        ))}
-      </ul>
+      {listId ? (
+        <ShoppingList
+          list={data?.shoppingLists.find((list) => list.id === listId)}
+        />
+      ) : (
+        <ShoppingLists lists={data?.shoppingLists} onSelect={setListId} />
+      )}
     </>
   );
 }
+
+const getShoppingListsDocument = graphql(/* GraphQL */ `
+  query GetShoppingLists {
+    shoppingLists {
+      id
+      createdAt
+      updatedAt
+      name
+      recipes {
+        id
+        name
+        createdAt
+        updatedAt
+        ingredients {
+          id
+          name
+          createdAt
+          updatedAt
+          section {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+        }
+      }
+      ingredients {
+        id
+        name
+        createdAt
+        updatedAt
+        section {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`);
 
 export default App;
