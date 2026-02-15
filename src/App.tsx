@@ -5,12 +5,12 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import './App.css';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import { graphql } from './gql/gql';
 import { gqlClient } from './gqlClient';
 import { ShoppingList } from './ShoppingList';
 import { ShoppingLists } from './ShoppingLists';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
@@ -34,6 +34,12 @@ function Goodsoup() {
     mutationFn: async () => gqlClient.request(createShoppingListDocument),
   });
 
+  const { mutate: deleteShoppingList } = useMutation({
+    mutationKey: ['deleteShoppingList'],
+    mutationFn: async ({ id }: { id: string }) =>
+      gqlClient.request(deleteShoppingListDocument, { id }),
+  });
+
   const [listId, setListId] = useState<string | undefined>();
   return (
     <>
@@ -46,6 +52,7 @@ function Goodsoup() {
         <ShoppingLists
           lists={data?.shoppingLists}
           onCreate={() => createShoppingList()}
+          onDelete={(id) => deleteShoppingList({ id })}
           onSelect={setListId}
         />
       )}
@@ -97,6 +104,16 @@ const getShoppingListsDocument = graphql(/* GraphQL */ `
 const createShoppingListDocument = graphql(/* GraphQL */ `
   mutation CreateShoppingList {
     createShoppingList {
+      id
+      createdAt
+      name
+    }
+  }
+`);
+
+const deleteShoppingListDocument = graphql(/* GraphQL */ `
+  mutation DeleteShoppingList($id: ID!) {
+    deleteShoppingList(id: $id) {
       id
       createdAt
       name
