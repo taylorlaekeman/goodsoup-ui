@@ -24,7 +24,7 @@ function App() {
 }
 
 function Goodsoup() {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['getShoppingLists'],
     queryFn: async () => gqlClient.request(getShoppingListsDocument),
   });
@@ -32,12 +32,14 @@ function Goodsoup() {
   const { mutate: createShoppingList } = useMutation({
     mutationKey: ['createShoppingList'],
     mutationFn: async () => gqlClient.request(createShoppingListDocument),
+    onSuccess: refetch,
   });
 
   const { mutate: deleteShoppingList } = useMutation({
     mutationKey: ['deleteShoppingList'],
     mutationFn: async ({ id }: { id: string }) =>
       gqlClient.request(deleteShoppingListDocument, { id }),
+    onSuccess: refetch,
   });
 
   const [listId, setListId] = useState<string | undefined>();
