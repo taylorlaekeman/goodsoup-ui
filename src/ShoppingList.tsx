@@ -2,10 +2,19 @@ import { Fragment } from 'react/jsx-runtime';
 import type { Ingredient, Section, ShoppingList } from './gql/graphql';
 import { RecipeList } from './RecipeList';
 
-export function ShoppingList({ list }: { list: ShoppingList }) {
+export function ShoppingList({
+  list,
+  onBack = () => {
+    /* empty */
+  },
+}: {
+  list: ShoppingList;
+  onBack?: () => void;
+}) {
   const { ingredientsBySectionId, sectionsById } = parseSections(list);
   return (
     <>
+      <button onClick={onBack}>Back</button>
       <RecipeList recipes={list.recipes} />
       <h2>Ingredients</h2>
       {Object.entries(ingredientsBySectionId).map(

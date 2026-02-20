@@ -43,12 +43,14 @@ function Goodsoup() {
   });
 
   const [listId, setListId] = useState<string | undefined>();
+
   return (
     <>
       <h1>Goodsoup</h1>
       {listId ? (
         <ShoppingList
           list={data?.shoppingLists.find((list) => list.id === listId)}
+          onBack={() => setListId(undefined)}
         />
       ) : (
         <ShoppingLists
