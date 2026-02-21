@@ -4,7 +4,15 @@ import { graphql } from './gql';
 import type { Recipe } from './gql/graphql';
 import { gqlClient } from './gqlClient';
 
-export function RecipeList({ recipes = [] }: { recipes?: Recipe[] }) {
+export function RecipeList({
+  onAdd = () => {
+    /* empty */
+  },
+  recipes = [],
+}: {
+  onAdd?: (id: string) => void;
+  recipes?: Recipe[];
+}) {
   const [isAddingRecipe, setIsAddingRecipe] = useState<boolean>(false);
   return (
     <>
@@ -22,24 +30,21 @@ export function RecipeList({ recipes = [] }: { recipes?: Recipe[] }) {
         <button onClick={() => setIsAddingRecipe(true)}>+ Add</button>
       )}
       {isAddingRecipe && (
-        <RecipeAdder
-          onAddNew={() => console.log('add new')}
-          onFinish={() => setIsAddingRecipe(false)}
-        />
+        <RecipeAdder onAdd={onAdd} onFinish={() => setIsAddingRecipe(false)} />
       )}
     </>
   );
 }
 
 function RecipeAdder({
-  onAddNew = () => {
+  onAdd = () => {
     /* empty */
   },
   onFinish = () => {
     /* empty */
   },
 }: {
-  onAddNew?: () => void;
+  onAdd?: (id: string) => void;
   onFinish?: () => void;
 }) {
   const { data } = useQuery({
@@ -63,13 +68,13 @@ function RecipeAdder({
           )
           .map((recipe) => (
             <div key={recipe.id}>
-              <button>{recipe.name}</button>
+              <button onClick={() => onAdd(recipe.id)}>{recipe.name}</button>
               <button>Edit</button>
               <button>Delete</button>
             </div>
           ))}
       </ul>
-      <button onClick={onAddNew}>+ New Recipe</button>
+      <button>+ New Recipe</button>
       <div>
         <button onClick={onFinish}>Cancel</button>
       </div>

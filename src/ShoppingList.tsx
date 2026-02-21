@@ -1,6 +1,9 @@
 import { Fragment } from 'react/jsx-runtime';
 import type { Ingredient, Section, ShoppingList } from './gql/graphql';
 import { RecipeList } from './RecipeList';
+import { useMutation } from '@tanstack/react-query';
+import { gqlClient } from './gqlClient';
+import { graphql } from './gql/gql';
 
 export function ShoppingList({
   list,
@@ -12,10 +15,22 @@ export function ShoppingList({
   onBack?: () => void;
 }) {
   const { ingredientsBySectionId, sectionsById } = parseSections(list);
+  const { mutate: addRecipe } = useMutation({
+    mutationFn: async ({ shoppingListId, recipeIds }) =>
+      gqlClient.request(addRecipeDocument, { shoppingListId, recipeIds }),
+  });
   return (
     <>
       <button onClick={onBack}>Back</button>
-      <RecipeList recipes={list.recipes} />
+      <RecipeList
+        onAdd={(id) =>
+          addRecipe({
+            shoppingListId: list.id,
+            recipeIds: [...list.recipes.map((recipe) => recipe.id), id],
+          })
+        }
+        recipes={list.recipes}
+      />
       <h2>Ingredients</h2>
       {Object.entries(ingredientsBySectionId).map(
         ([sectionId, ingredients]) => {
@@ -66,3 +81,15 @@ function parseSections(list: ShoppingList) {
   }, {});
   return { ingredientsBySectionId, sectionsById };
 }
+
+const addRecipeDocument = graphql(/* GraphQL */ `
+  mutation AddRecipeToShoppingList($shoppingListId: ID!, $recipeIds: [ID!]!) {
+    updateShoppingList(id: $shoppingListId, recipes: $recipeIds) {
+      id
+      recipes {
+        id
+        name
+      }
+    }
+  }
+`);
