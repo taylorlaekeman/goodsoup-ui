@@ -1,9 +1,9 @@
-import { Fragment } from 'react/jsx-runtime';
-import type { Ingredient, Section, ShoppingList } from './gql/graphql';
-import { RecipeList } from './RecipeList';
 import { useMutation } from '@tanstack/react-query';
-import { gqlClient } from './gqlClient';
+import { Fragment } from 'react/jsx-runtime';
 import { graphql } from './gql/gql';
+import type { Ingredient, Section, ShoppingList } from './gql/graphql';
+import { gqlClient } from './gqlClient';
+import { RecipeList } from './RecipeList';
 
 export function ShoppingList({
   list,
