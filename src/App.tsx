@@ -51,6 +51,7 @@ function Goodsoup() {
         <ShoppingList
           list={data?.shoppingLists.find((list) => list.id === listId)}
           onBack={() => setListId(undefined)}
+          onChange={() => refetch()}
         />
       ) : (
         <ShoppingLists

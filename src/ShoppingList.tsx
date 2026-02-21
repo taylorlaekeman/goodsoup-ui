@@ -10,14 +10,19 @@ export function ShoppingList({
   onBack = () => {
     /* empty */
   },
+  onChange = () => {
+    /* empty */
+  },
 }: {
   list: ShoppingList;
   onBack?: () => void;
+  onChange?: () => void;
 }) {
   const { ingredientsBySectionId, sectionsById } = parseSections(list);
   const { mutate: updateRecipes } = useMutation({
     mutationFn: async ({ shoppingListId, recipes }) =>
       gqlClient.request(updateRecipesDocument, { shoppingListId, recipes }),
+    onSuccess: () => onChange(),
   });
   return (
     <>
