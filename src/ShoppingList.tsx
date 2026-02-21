@@ -15,18 +15,28 @@ export function ShoppingList({
   onBack?: () => void;
 }) {
   const { ingredientsBySectionId, sectionsById } = parseSections(list);
-  const { mutate: addRecipe } = useMutation({
-    mutationFn: async ({ shoppingListId, recipeIds }) =>
-      gqlClient.request(addRecipeDocument, { shoppingListId, recipeIds }),
+  const { mutate: updateRecipes } = useMutation({
+    mutationFn: async ({ shoppingListId, recipes }) =>
+      gqlClient.request(updateRecipesDocument, { shoppingListId, recipes }),
   });
   return (
     <>
       <button onClick={onBack}>Back</button>
       <RecipeList
         onAdd={(id) =>
-          addRecipe({
+          updateRecipes({
             shoppingListId: list.id,
-            recipeIds: [...list.recipes.map((recipe) => recipe.id), id],
+            recipes: [...list.recipes.map((recipe) => recipe.id), id],
+          })
+        }
+        onRemove={(id) =>
+          updateRecipes({
+            shoppingListId: list.id,
+            recipes: [
+              ...list.recipes
+                .filter((recipe) => recipe.id !== id)
+                .map((recipe) => recipe.id),
+            ],
           })
         }
         recipes={list.recipes}
@@ -82,9 +92,9 @@ function parseSections(list: ShoppingList) {
   return { ingredientsBySectionId, sectionsById };
 }
 
-const addRecipeDocument = graphql(/* GraphQL */ `
-  mutation AddRecipeToShoppingList($shoppingListId: ID!, $recipeIds: [ID!]!) {
-    updateShoppingList(id: $shoppingListId, recipes: $recipeIds) {
+const updateRecipesDocument = graphql(/* GraphQL */ `
+  mutation UpdateShoppingListRecipes($shoppingListId: ID!, $recipes: [ID!]!) {
+    updateShoppingList(id: $shoppingListId, recipes: $recipes) {
       id
       recipes {
         id

@@ -8,9 +8,13 @@ export function RecipeList({
   onAdd = () => {
     /* empty */
   },
+  onRemove = () => {
+    /* empty */
+  },
   recipes = [],
 }: {
   onAdd?: (id: string) => void;
+  onRemove?: (id: string) => void;
   recipes?: Recipe[];
 }) {
   const [isAddingRecipe, setIsAddingRecipe] = useState<boolean>(false);
@@ -22,7 +26,7 @@ export function RecipeList({
           <li key={recipe.id}>
             {recipe.name}
             <button>Edit</button>
-            <button>Remove</button>
+            <button onClick={() => onRemove(recipe.id)}>Remove</button>
           </li>
         ))}
       </ul>
