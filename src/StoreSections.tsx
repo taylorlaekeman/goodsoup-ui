@@ -7,7 +7,6 @@ export function StoreSections() {
     queryKey: ['getSections'],
     queryFn: async () => gqlClient.request(getSectionsDocument),
   });
-  console.log({ data });
   return (
     <>
       <h2>Sections</h2>
