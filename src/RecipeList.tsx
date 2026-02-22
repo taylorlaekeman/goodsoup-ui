@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { graphql } from './gql';
 import type { Recipe } from './gql/graphql';
 import { gqlClient } from './gqlClient';
@@ -34,13 +34,18 @@ export function RecipeList({
         <button onClick={() => setIsAddingRecipe(true)}>+ Add</button>
       )}
       {isAddingRecipe && (
-        <RecipeAdder onAdd={onAdd} onFinish={() => setIsAddingRecipe(false)} />
+        <RecipeAdder
+          existingRecipes={recipes}
+          onAdd={onAdd}
+          onFinish={() => setIsAddingRecipe(false)}
+        />
       )}
     </>
   );
 }
 
 function RecipeAdder({
+  existingRecipes = [],
   onAdd = () => {
     /* empty */
   },
@@ -48,6 +53,7 @@ function RecipeAdder({
     /* empty */
   },
 }: {
+  existingRecipes?: Recipe[];
   onAdd?: (id: string) => void;
   onFinish?: () => void;
 }) {
@@ -56,6 +62,10 @@ function RecipeAdder({
     queryFn: async () => gqlClient.request(getRecipesDocument),
   });
   const [searchString, setSearchString] = useState<string>('');
+  const existingRecipeIds = useMemo(
+    () => existingRecipes.map((recipe) => recipe.id),
+    [existingRecipes],
+  );
   return (
     <>
       <input
@@ -64,6 +74,7 @@ function RecipeAdder({
       />
       <ul>
         {data?.recipes
+          .filter((recipe) => !existingRecipeIds.includes(recipe.id))
           .filter((recipe) =>
             recipe.name
               .replace(' ', '')
