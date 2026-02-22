@@ -22,12 +22,21 @@ export function StoreSections() {
     },
   });
 
+  const { mutate: deleteSection } = useMutation({
+    mutationFn: async (id: string) =>
+      gqlClient.request(DELETE_SECTION_DOCUMENT, { id }),
+    onSuccess: refetch,
+  });
+
   return (
     <>
       <h2>Sections</h2>
       <ul>
         {data?.sections.map((section) => (
-          <li key={section.id}>{section.name}</li>
+          <li key={section.id}>
+            <p>{section.name}</p>
+            <button onClick={() => deleteSection(section.id)}>Delete</button>
+          </li>
         ))}
       </ul>
       {isCreating ? (
@@ -58,6 +67,15 @@ const getSectionsDocument = graphql(/* GraphQL */ `
 const CREATE_SECTION_DOCUMENT = graphql(/* GraphQL */ `
   mutation CreateSection($name: String!) {
     createSection(name: $name) {
+      id
+      name
+    }
+  }
+`);
+
+const DELETE_SECTION_DOCUMENT = graphql(/* GraphQL */ `
+  mutation DeleteSection($id: ID!) {
+    deleteSection(id: $id) {
       id
       name
     }
