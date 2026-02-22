@@ -11,6 +11,7 @@ import { graphql } from './gql/gql';
 import { gqlClient } from './gqlClient';
 import { ShoppingList } from './ShoppingList';
 import { ShoppingLists } from './ShoppingLists';
+import { StoreSections } from './StoreSections';
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ function Goodsoup() {
           onSelect={setListId}
         />
       )}
+      <StoreSections />
     </>
   );
 }
