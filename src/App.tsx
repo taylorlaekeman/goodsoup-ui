@@ -9,10 +9,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import { graphql } from './gql/gql';
 import { gqlClient } from './gqlClient';
+import { Ingredients } from './Ingredients';
+import { Recipes } from './Recipes';
 import { ShoppingList } from './ShoppingList';
 import { ShoppingLists } from './ShoppingLists';
 import { StoreSections } from './StoreSections';
-import { Ingredients } from './Ingredients';
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ function Goodsoup() {
           onSelect={setListId}
         />
       )}
+      <Recipes />
       <Ingredients />
       <StoreSections />
     </>
