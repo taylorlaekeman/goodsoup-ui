@@ -26,14 +26,23 @@ export function Ingredients() {
     onSuccess: refetchIngredients,
   });
 
+  const { mutate: deleteIngredient } = useMutation({
+    mutationFn: async (id: string) =>
+      gqlClient.request(DELETE_INGREDIENT_DOCUMENT, { id }),
+    onSuccess: refetchIngredients,
+  });
+
   return (
     <>
       <h2>Ingredients</h2>
       <ul>
         {ingredientsData?.ingredients.map((ingredient) => (
-          <li
-            key={ingredient.id}
-          >{`${ingredient.name} (${ingredient.section.name})`}</li>
+          <li key={ingredient.id}>
+            <p>{`${ingredient.name} (${ingredient.section.name})`}</p>
+            <button onClick={() => deleteIngredient(ingredient.id)}>
+              Delete
+            </button>
+          </li>
         ))}
       </ul>
       {isCreating ? (
@@ -98,6 +107,15 @@ const CREATE_INGREDIENT_DOCUMENT = graphql(/* GraphQL */ `
         id
         name
       }
+    }
+  }
+`);
+
+const DELETE_INGREDIENT_DOCUMENT = graphql(/* GraphQL */ `
+  mutation DeleteIngredient($id: ID!) {
+    deleteIngredient(id: $id) {
+      id
+      name
     }
   }
 `);
