@@ -55,7 +55,7 @@ export function StoreSections() {
   );
 }
 
-const getSectionsDocument = graphql(/* GraphQL */ `
+export const getSectionsDocument = graphql(/* GraphQL */ `
   query GetSections {
     sections {
       id
