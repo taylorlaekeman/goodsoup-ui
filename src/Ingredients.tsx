@@ -37,7 +37,7 @@ export function Ingredients() {
       <h2>Ingredients</h2>
       <ul>
         {ingredientsData?.ingredients.map((ingredient) => (
-          <li key={ingredient.id}>
+          <li className="flex-row" key={ingredient.id}>
             <p>{`${ingredient.name} (${ingredient.section.name})`}</p>
             <button onClick={() => deleteIngredient(ingredient.id)}>
               Delete

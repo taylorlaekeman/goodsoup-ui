@@ -33,7 +33,7 @@ export function StoreSections() {
       <h2>Sections</h2>
       <ul>
         {data?.sections.map((section) => (
-          <li key={section.id}>
+          <li className="flex-row" key={section.id}>
             <p>{section.name}</p>
             <button onClick={() => deleteSection(section.id)}>Delete</button>
           </li>

@@ -22,7 +22,7 @@ export function ShoppingLists({
       <h2>Shopping Lists</h2>
       <ul>
         {lists?.map((list) => (
-          <li key={list.id}>
+          <li className="flex-row" key={list.id}>
             <button onClick={() => onSelect(list.id)}>
               {new Date(list.createdAt).toDateString()}
             </button>
