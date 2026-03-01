@@ -33,12 +33,21 @@ export function Recipes() {
     onSuccess: refetch,
   });
 
+  const { mutate: deleteRecipe } = useMutation({
+    mutationFn: async (id: string) =>
+      gqlClient.request(DELETE_RECIPE_DOCUMENT, { id }),
+    onSuccess: refetch,
+  });
+
   return (
     <>
       <h2>Recipes</h2>
       <ul>
         {recipesData?.recipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.name}</li>
+          <li key={recipe.id}>
+            <p>{recipe.name}</p>
+            <button onClick={() => deleteRecipe(recipe.id)}>Delete</button>
+          </li>
         ))}
       </ul>
       {isCreating ? (
@@ -133,6 +142,15 @@ const GET_ALL_INGREDIENTS_DOCUMENT = graphql(/* GraphQL */ `
 const CREATE_RECIPE_DOCUMENT = graphql(/* GraphQL */ `
   mutation CreateRecipe($name: String!, $ingredients: [ID!]!) {
     createRecipe(name: $name, ingredients: $ingredients) {
+      id
+      name
+    }
+  }
+`);
+
+const DELETE_RECIPE_DOCUMENT = graphql(/* GraphQL */ `
+  mutation DeleteRecipe($id: ID!) {
+    deleteRecipe(id: $id) {
       id
       name
     }
