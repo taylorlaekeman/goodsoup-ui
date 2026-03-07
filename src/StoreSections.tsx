@@ -1,4 +1,9 @@
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  CheckIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { graphql } from './gql';
@@ -39,6 +44,21 @@ export function StoreSections() {
           </button>
         )}
       </header>
+      {isCreating && (
+        <div className="flex-row">
+          <input
+            onChange={(event) => setNewSection(event.target.value)}
+            type="text"
+            value={newSection}
+          />
+          <button className="icon" onClick={() => createSection(newSection)}>
+            <CheckIcon />
+          </button>
+          <button className="icon" onClick={() => setIsCreating(false)}>
+            <XMarkIcon />
+          </button>
+        </div>
+      )}
       <ul>
         {data?.sections.map((section) => (
           <li className="flex-row" key={section.id}>
@@ -52,16 +72,6 @@ export function StoreSections() {
           </li>
         ))}
       </ul>
-      {isCreating && (
-        <>
-          <input
-            onChange={(event) => setNewSection(event.target.value)}
-            value={newSection}
-          />
-          <button onClick={() => createSection(newSection)}>Save</button>
-          <button onClick={() => setIsCreating(false)}>Cancel</button>
-        </>
-      )}
     </section>
   );
 }
