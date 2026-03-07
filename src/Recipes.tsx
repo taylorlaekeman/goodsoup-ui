@@ -1,3 +1,4 @@
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { graphql } from './gql';
@@ -46,7 +47,9 @@ export function Recipes() {
         {recipesData?.recipes.map((recipe) => (
           <li className="flex-row" key={recipe.id}>
             <p>{recipe.name}</p>
-            <button onClick={() => deleteRecipe(recipe.id)}>Delete</button>
+            <button className="delete" onClick={() => deleteRecipe(recipe.id)}>
+              <TrashIcon />
+            </button>
           </li>
         ))}
       </ul>
