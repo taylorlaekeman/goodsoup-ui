@@ -132,6 +132,7 @@ svg {
 }
 
 input[type="text"] {
+  background: none;
   border: solid black 2px;
   border-radius: 8px;
   outline: none;
