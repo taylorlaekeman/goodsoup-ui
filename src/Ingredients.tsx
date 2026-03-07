@@ -33,7 +33,7 @@ export function Ingredients() {
   });
 
   return (
-    <>
+    <section>
       <h2>Ingredients</h2>
       <ul>
         {ingredientsData?.ingredients.map((ingredient) => (
@@ -82,7 +82,7 @@ export function Ingredients() {
       ) : (
         <button onClick={() => setIsCreating(true)}>+ New</button>
       )}
-    </>
+    </section>
   );
 }
 

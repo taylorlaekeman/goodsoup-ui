@@ -40,11 +40,11 @@ export function Recipes() {
   });
 
   return (
-    <>
+    <section>
       <h2>Recipes</h2>
       <ul>
         {recipesData?.recipes.map((recipe) => (
-          <li key={recipe.id}>
+          <li className="flex-row" key={recipe.id}>
             <p>{recipe.name}</p>
             <button onClick={() => deleteRecipe(recipe.id)}>Delete</button>
           </li>
@@ -117,7 +117,7 @@ export function Recipes() {
       ) : (
         <button onClick={() => setIsCreating(true)}>+ New</button>
       )}
-    </>
+    </section>
   );
 }
 

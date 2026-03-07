@@ -29,7 +29,7 @@ export function StoreSections() {
   });
 
   return (
-    <>
+    <section>
       <h2>Sections</h2>
       <ul>
         {data?.sections.map((section) => (
@@ -51,7 +51,7 @@ export function StoreSections() {
       ) : (
         <button onClick={() => setIsCreating(true)}>+ New</button>
       )}
-    </>
+    </section>
   );
 }
 

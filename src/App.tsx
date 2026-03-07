@@ -50,23 +50,27 @@ function Goodsoup() {
   return (
     <>
       <h1>Goodsoup</h1>
-      {listId ? (
-        <ShoppingList
-          list={data?.shoppingLists.find((list) => list.id === listId)}
-          onBack={() => setListId(undefined)}
-          onChange={() => refetch()}
-        />
-      ) : (
-        <ShoppingLists
-          lists={data?.shoppingLists}
-          onCreate={() => createShoppingList()}
-          onDelete={(id) => deleteShoppingList({ id })}
-          onSelect={setListId}
-        />
-      )}
-      <Recipes />
-      <Ingredients />
-      <StoreSections />
+      <main>
+        <section>
+          {listId ? (
+            <ShoppingList
+              list={data?.shoppingLists.find((list) => list.id === listId)}
+              onBack={() => setListId(undefined)}
+              onChange={() => refetch()}
+            />
+          ) : (
+            <ShoppingLists
+              lists={data?.shoppingLists}
+              onCreate={() => createShoppingList()}
+              onDelete={(id) => deleteShoppingList({ id })}
+              onSelect={setListId}
+            />
+          )}
+        </section>
+        <Recipes />
+        <Ingredients />
+        <StoreSections />
+      </main>
     </>
   );
 }

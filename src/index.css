@@ -67,6 +67,19 @@ button:focus-visible {
   }
 }
 
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+section {
+  border: solid black 2px;
+  border-radius: 8px;
+  flex: 1;
+  padding: 24px 8px;
+}
+
 .flex-row {
   display: flex;
 }
