@@ -1,3 +1,4 @@
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { graphql } from './gql';
@@ -35,7 +36,12 @@ export function StoreSections() {
         {data?.sections.map((section) => (
           <li className="flex-row" key={section.id}>
             <p>{section.name}</p>
-            <button onClick={() => deleteSection(section.id)}>Delete</button>
+            <button
+              className="delete"
+              onClick={() => deleteSection(section.id)}
+            >
+              <TrashIcon />
+            </button>
           </li>
         ))}
       </ul>
