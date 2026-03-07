@@ -46,18 +46,20 @@ export function ShoppingList({
         }
         recipes={list.recipes}
       />
-      <h2>Ingredients</h2>
+      <h3>Ingredients</h3>
       {Object.entries(ingredientsBySectionId).map(
         ([sectionId, ingredients]) => {
           return (
-            <Fragment key={sectionId}>
-              <h3>{sectionsById[sectionId]?.name}</h3>
-              <ul>
+            <div className="indented" key={sectionId}>
+              <h4>{sectionsById[sectionId]?.name}</h4>
+              <ul className="indented">
                 {ingredients.map((ingredient) => (
-                  <li key={ingredient.id}>{ingredient.name}</li>
+                  <li key={ingredient.id}>
+                    <p>{ingredient.name}</p>
+                  </li>
                 ))}
               </ul>
-            </Fragment>
+            </div>
           );
         },
       )}

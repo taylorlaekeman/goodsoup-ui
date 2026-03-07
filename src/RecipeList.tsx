@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { graphql } from './gql';
 import type { Recipe } from './gql/graphql';
 import { gqlClient } from './gqlClient';
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 export function RecipeList({
   onAdd = () => {
@@ -20,19 +21,24 @@ export function RecipeList({
   const [isAddingRecipe, setIsAddingRecipe] = useState<boolean>(false);
   return (
     <>
-      <h2>Recipes</h2>
+      <header>
+        <h3>Recipes</h3>
+        {!isAddingRecipe && (
+          <button className="icon" onClick={() => setIsAddingRecipe(true)}>
+            <PlusIcon />
+          </button>
+        )}
+      </header>
       <ul>
         {recipes.map((recipe) => (
           <li key={recipe.id}>
-            {recipe.name}
-            <button>Edit</button>
-            <button onClick={() => onRemove(recipe.id)}>Remove</button>
+            <p>{recipe.name}</p>
+            <button className="icon" onClick={() => onRemove(recipe.id)}>
+              <XMarkIcon />
+            </button>
           </li>
         ))}
       </ul>
-      {!isAddingRecipe && (
-        <button onClick={() => setIsAddingRecipe(true)}>+ Add</button>
-      )}
       {isAddingRecipe && (
         <RecipeAdder
           existingRecipes={recipes}

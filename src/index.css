@@ -95,15 +95,18 @@ ul {
   padding: 0;
 }
 
-h2 {
+h2,
+h3,
+h4,
+p {
   text-align: left;
 }
 
 p {
   margin: 0;
-  text-align: left;
 }
 
+li,
 .flex-row {
   align-items: center;
   display: flex;
@@ -134,4 +137,9 @@ input[type="text"] {
   outline: none;
   padding: 8px;
   width: 170px;
+}
+
+ul,
+.indented {
+  padding-left: 12px;
 }
