@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { graphql } from './gql';
 import { gqlClient } from './gqlClient';
 import { getSectionsDocument } from './StoreSections';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 export function Ingredients() {
   const { data: ingredientsData, refetch: refetchIngredients } = useQuery({
@@ -39,8 +40,11 @@ export function Ingredients() {
         {ingredientsData?.ingredients.map((ingredient) => (
           <li className="flex-row" key={ingredient.id}>
             <p>{`${ingredient.name} (${ingredient.section.name})`}</p>
-            <button onClick={() => deleteIngredient(ingredient.id)}>
-              Delete
+            <button
+              className="delete"
+              onClick={() => deleteIngredient(ingredient.id)}
+            >
+              <TrashIcon />
             </button>
           </li>
         ))}

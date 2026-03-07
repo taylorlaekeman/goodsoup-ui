@@ -88,8 +88,8 @@ section {
 button.delete {
   background: none;
   padding: 8px;
+}
 
-  svg {
-    height: 16px;
-  }
+svg {
+  height: 16px;
 }
