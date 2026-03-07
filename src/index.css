@@ -133,4 +133,5 @@ input[type="text"] {
   border-radius: 8px;
   outline: none;
   padding: 8px;
+  width: 170px;
 }
