@@ -82,4 +82,13 @@ section {
 
 .flex-row {
   display: flex;
+  justify-content: space-between;
+}
+
+button.delete {
+  padding: 8px;
+
+  svg {
+    height: 16px;
+  }
 }

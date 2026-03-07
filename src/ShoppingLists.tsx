@@ -1,3 +1,4 @@
+import { TrashIcon } from '@heroicons/react/24/outline';
 import type { ShoppingList } from './gql/graphql';
 
 export function ShoppingLists({
@@ -26,7 +27,9 @@ export function ShoppingLists({
             <button onClick={() => onSelect(list.id)}>
               {new Date(list.createdAt).toDateString()}
             </button>
-            <button onClick={() => onDelete(list.id)}>Delete</button>
+            <button className="delete" onClick={() => onDelete(list.id)}>
+              <TrashIcon />
+            </button>
           </li>
         ))}
       </ul>
