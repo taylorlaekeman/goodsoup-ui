@@ -99,6 +99,14 @@ p {
   justify-content: space-between;
 }
 
+button.text {
+  background: none;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0;
+  text-decoration: underline;
+}
+
 button.delete {
   background: none;
   padding: 8px;

@@ -24,7 +24,7 @@ export function ShoppingLists({
       <ul>
         {lists?.map((list) => (
           <li className="flex-row" key={list.id}>
-            <button onClick={() => onSelect(list.id)}>
+            <button className="text" onClick={() => onSelect(list.id)}>
               {new Date(list.createdAt).toDateString()}
             </button>
             <button className="delete" onClick={() => onDelete(list.id)}>
