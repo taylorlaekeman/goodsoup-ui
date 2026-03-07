@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { graphql } from './gql';
 import { gqlClient } from './gqlClient';
 import { getSectionsDocument } from './StoreSections';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 export function Ingredients() {
   const { data: ingredientsData, refetch: refetchIngredients } = useQuery({
@@ -35,7 +35,14 @@ export function Ingredients() {
 
   return (
     <section>
-      <h2>Ingredients</h2>
+      <header>
+        <h2>Ingredients</h2>
+        {!isCreating && (
+          <button className="icon" onClick={() => setIsCreating(true)}>
+            <PlusIcon />
+          </button>
+        )}
+      </header>
       <ul>
         {ingredientsData?.ingredients.map((ingredient) => (
           <li className="flex-row" key={ingredient.id}>
@@ -49,7 +56,7 @@ export function Ingredients() {
           </li>
         ))}
       </ul>
-      {isCreating ? (
+      {isCreating && (
         <>
           <input
             onChange={(event) => setNewIngredientName(event.target.value)}
@@ -83,8 +90,6 @@ export function Ingredients() {
           </button>
           <button onClick={() => setIsCreating(false)}>Cancel</button>
         </>
-      ) : (
-        <button onClick={() => setIsCreating(true)}>+ New</button>
       )}
     </section>
   );

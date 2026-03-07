@@ -1,4 +1,4 @@
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { graphql } from './gql';
@@ -42,7 +42,14 @@ export function Recipes() {
 
   return (
     <section>
-      <h2>Recipes</h2>
+      <header>
+        <h2>Recipes</h2>
+        {!isCreating && (
+          <button className="icon" onClick={() => setIsCreating(true)}>
+            <PlusIcon />
+          </button>
+        )}
+      </header>
       <ul>
         {recipesData?.recipes.map((recipe) => (
           <li className="flex-row" key={recipe.id}>
@@ -53,7 +60,7 @@ export function Recipes() {
           </li>
         ))}
       </ul>
-      {isCreating ? (
+      {isCreating && (
         <>
           <input
             onChange={(event) => setNewRecipeName(event.target.value)}
@@ -117,8 +124,6 @@ export function Recipes() {
           </button>
           <button onClick={() => setIsCreating(false)}>Cancel</button>
         </>
-      ) : (
-        <button onClick={() => setIsCreating(true)}>+ New</button>
       )}
     </section>
   );

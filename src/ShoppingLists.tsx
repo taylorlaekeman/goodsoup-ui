@@ -1,4 +1,4 @@
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import type { ShoppingList } from './gql/graphql';
 
 export function ShoppingLists({
@@ -20,7 +20,12 @@ export function ShoppingLists({
 }) {
   return (
     <>
-      <h2>Shopping Lists</h2>
+      <header>
+        <h2>Shopping Lists</h2>
+        <button className="icon" onClick={onCreate}>
+          <PlusIcon />
+        </button>
+      </header>
       <ul>
         {lists?.map((list) => (
           <li className="flex-row" key={list.id}>
@@ -33,7 +38,6 @@ export function ShoppingLists({
           </li>
         ))}
       </ul>
-      <button onClick={onCreate}>+ Add</button>
     </>
   );
 }

@@ -77,7 +77,14 @@ section {
   border: solid black 2px;
   border-radius: 8px;
   flex: 1;
+  min-width: 260px;
   padding: 24px;
+}
+
+header {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
 }
 
 ul {
@@ -88,13 +95,17 @@ ul {
   padding: 0;
 }
 
+h2 {
+  text-align: left;
+}
+
 p {
   margin: 0;
   text-align: left;
 }
 
 .flex-row {
-  align-items: center;
+  align-items: baseline;
   display: flex;
   justify-content: space-between;
 }
@@ -107,7 +118,8 @@ button.text {
   text-decoration: underline;
 }
 
-button.delete {
+button.delete,
+button.icon {
   background: none;
   padding: 8px;
 }

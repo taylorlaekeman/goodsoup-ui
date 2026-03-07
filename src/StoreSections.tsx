@@ -1,4 +1,4 @@
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { graphql } from './gql';
@@ -31,7 +31,14 @@ export function StoreSections() {
 
   return (
     <section>
-      <h2>Sections</h2>
+      <header>
+        <h2>Sections</h2>
+        {!isCreating && (
+          <button className="icon" onClick={() => setIsCreating(true)}>
+            <PlusIcon />
+          </button>
+        )}
+      </header>
       <ul>
         {data?.sections.map((section) => (
           <li className="flex-row" key={section.id}>
@@ -45,7 +52,7 @@ export function StoreSections() {
           </li>
         ))}
       </ul>
-      {isCreating ? (
+      {isCreating && (
         <>
           <input
             onChange={(event) => setNewSection(event.target.value)}
@@ -54,8 +61,6 @@ export function StoreSections() {
           <button onClick={() => createSection(newSection)}>Save</button>
           <button onClick={() => setIsCreating(false)}>Cancel</button>
         </>
-      ) : (
-        <button onClick={() => setIsCreating(true)}>+ New</button>
       )}
     </section>
   );
