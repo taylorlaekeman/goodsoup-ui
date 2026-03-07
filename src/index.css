@@ -77,10 +77,24 @@ section {
   border: solid black 2px;
   border-radius: 8px;
   flex: 1;
-  padding: 24px 8px;
+  padding: 24px;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  text-align: left;
 }
 
 .flex-row {
+  align-items: center;
   display: flex;
   justify-content: space-between;
 }
