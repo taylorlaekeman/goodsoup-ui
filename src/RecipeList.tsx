@@ -3,7 +3,11 @@ import { useMemo, useState } from 'react';
 import { graphql } from './gql';
 import type { Recipe } from './gql/graphql';
 import { gqlClient } from './gqlClient';
-import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  MagnifyingGlassIcon,
+  PlusIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 
 export function RecipeList({
   onAdd = () => {
@@ -74,10 +78,17 @@ function RecipeAdder({
   );
   return (
     <>
-      <input
-        value={searchString}
-        onChange={(event) => setSearchString(event.target.value ?? '')}
-      />
+      <div className="indented flex-row">
+        <MagnifyingGlassIcon />
+        <input
+          onChange={(event) => setSearchString(event.target.value ?? '')}
+          value={searchString}
+          type="text"
+        />
+        <button className="icon" onClick={onFinish}>
+          <XMarkIcon />
+        </button>
+      </div>
       <ul>
         {data?.recipes
           .filter((recipe) => !existingRecipeIds.includes(recipe.id))
@@ -88,17 +99,13 @@ function RecipeAdder({
               .includes(searchString.replace(' ', '').toLowerCase()),
           )
           .map((recipe) => (
-            <div key={recipe.id}>
-              <button onClick={() => onAdd(recipe.id)}>{recipe.name}</button>
-              <button>Edit</button>
-              <button>Delete</button>
-            </div>
+            <li key={recipe.id}>
+              <button className="text" onClick={() => onAdd(recipe.id)}>
+                {recipe.name}
+              </button>
+            </li>
           ))}
       </ul>
-      <button>+ New Recipe</button>
-      <div>
-        <button onClick={onFinish}>Cancel</button>
-      </div>
     </>
   );
 }
