@@ -3,7 +3,12 @@ import { useState } from 'react';
 import { graphql } from './gql';
 import { gqlClient } from './gqlClient';
 import { getSectionsDocument } from './StoreSections';
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  CheckIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 
 export function Ingredients() {
   const { data: ingredientsData, refetch: refetchIngredients } = useQuery({
@@ -43,6 +48,55 @@ export function Ingredients() {
           </button>
         )}
       </header>
+      {isCreating && (
+        <div className="vertical-spaced">
+          <div className="flex-row">
+            <label htmlFor="ingredient-name">Name</label>
+            <input
+              id="ingredient-name"
+              onChange={(event) => setNewIngredientName(event.target.value)}
+              type="text"
+              value={newIngredientName}
+            />
+          </div>
+          <div className="flex-row">
+            <label htmlFor="ingredient-section">Section</label>
+            <select
+              id="ingredient-section"
+              onChange={(event) => setNewIngredientSection(event.target.value)}
+              value={newIngredientSection}
+            >
+              <option value="">Please Select</option>
+              {sectionsdata?.sections.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="right-align">
+            <button
+              className="icon"
+              onClick={() => {
+                if (newIngredientName && newIngredientSection) {
+                  createIngredient({
+                    name: newIngredientName,
+                    section: newIngredientSection,
+                  });
+                  setNewIngredientName('');
+                  setNewIngredientSection('');
+                  setIsCreating(false);
+                }
+              }}
+            >
+              <CheckIcon />
+            </button>
+            <button className="icon" onClick={() => setIsCreating(false)}>
+              <XMarkIcon />
+            </button>
+          </div>
+        </div>
+      )}
       <ul>
         {ingredientsData?.ingredients.map((ingredient) => (
           <li className="flex-row" key={ingredient.id}>
@@ -56,41 +110,6 @@ export function Ingredients() {
           </li>
         ))}
       </ul>
-      {isCreating && (
-        <>
-          <input
-            onChange={(event) => setNewIngredientName(event.target.value)}
-            value={newIngredientName}
-          />
-          <select
-            onChange={(event) => setNewIngredientSection(event.target.value)}
-            value={newIngredientSection}
-          >
-            <option value="">Please Select</option>
-            {sectionsdata?.sections.map((section) => (
-              <option key={section.id} value={section.id}>
-                {section.name}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => {
-              if (newIngredientName && newIngredientSection) {
-                createIngredient({
-                  name: newIngredientName,
-                  section: newIngredientSection,
-                });
-                setNewIngredientName('');
-                setNewIngredientSection('');
-                setIsCreating(false);
-              }
-            }}
-          >
-            Save
-          </button>
-          <button onClick={() => setIsCreating(false)}>Cancel</button>
-        </>
-      )}
     </section>
   );
 }

@@ -88,11 +88,15 @@ header {
 }
 
 ul {
+  margin: 0;
+  padding: 0;
+}
+
+.vertical-spaced,
+ul {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 0;
-  padding: 0;
 }
 
 h2,
@@ -131,7 +135,8 @@ svg {
   height: 16px;
 }
 
-input[type="text"] {
+input[type="text"],
+select {
   background: none;
   border: solid black 2px;
   border-radius: 8px;
@@ -143,4 +148,10 @@ input[type="text"] {
 ul,
 .indented {
   padding-left: 12px;
+}
+
+.right-align {
+  display: flex;
+  gap: 8px;
+  justify-content: end;
 }
