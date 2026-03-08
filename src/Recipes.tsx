@@ -1,4 +1,9 @@
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  CheckIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { graphql } from './gql';
@@ -50,28 +55,24 @@ export function Recipes() {
           </button>
         )}
       </header>
-      <ul>
-        {recipesData?.recipes.map((recipe) => (
-          <li className="flex-row" key={recipe.id}>
-            <p>{recipe.name}</p>
-            <button className="delete" onClick={() => deleteRecipe(recipe.id)}>
-              <TrashIcon />
-            </button>
-          </li>
-        ))}
-      </ul>
       {isCreating && (
-        <>
-          <input
-            onChange={(event) => setNewRecipeName(event.target.value)}
-            value={newRecipeName}
-          />
+        <div className="vertical-spaced">
+          <div className="flex-row">
+            <label htmlFor="recipe-name">Name</label>
+            <input
+              id="recipe-name"
+              onChange={(event) => setNewRecipeName(event.target.value)}
+              type="text"
+              value={newRecipeName}
+            />
+          </div>
           <p>Recipe Ingredients</p>
           <ul>
             {newRecipeIngredients.map((ingredient) => (
               <li key={ingredient.id}>
                 <p>{ingredient.name}</p>
                 <button
+                  className="icon"
                   onClick={() =>
                     setNewRecipeIngredients((oldValue) =>
                       oldValue.filter(
@@ -80,7 +81,7 @@ export function Recipes() {
                     )
                   }
                 >
-                  Remove
+                  <XMarkIcon />
                 </button>
               </li>
             ))}
@@ -93,8 +94,8 @@ export function Recipes() {
               )
               .map((ingredient) => (
                 <li key={ingredient.id}>
-                  <p>{ingredient.name}</p>
                   <button
+                    className="text"
                     onClick={() =>
                       setNewRecipeIngredients((oldValue) => [
                         ...oldValue,
@@ -102,29 +103,44 @@ export function Recipes() {
                       ])
                     }
                   >
-                    Add
+                    {ingredient.name}
                   </button>
                 </li>
               ))}
           </ul>
-          <button
-            onClick={() => {
-              createRecipe({
-                name: newRecipeName,
-                ingredients: newRecipeIngredients.map(
-                  (ingredient) => ingredient.id,
-                ),
-              });
-              setNewRecipeName('');
-              setNewRecipeIngredients([]);
-              setIsCreating(false);
-            }}
-          >
-            Save
-          </button>
-          <button onClick={() => setIsCreating(false)}>Cancel</button>
-        </>
+          <div className="right-align">
+            <button
+              className="icon"
+              onClick={() => {
+                createRecipe({
+                  name: newRecipeName,
+                  ingredients: newRecipeIngredients.map(
+                    (ingredient) => ingredient.id,
+                  ),
+                });
+                setNewRecipeName('');
+                setNewRecipeIngredients([]);
+                setIsCreating(false);
+              }}
+            >
+              <CheckIcon />
+            </button>
+            <button className="icon" onClick={() => setIsCreating(false)}>
+              <XMarkIcon />
+            </button>
+          </div>
+        </div>
       )}
+      <ul>
+        {recipesData?.recipes.map((recipe) => (
+          <li className="flex-row" key={recipe.id}>
+            <p>{recipe.name}</p>
+            <button className="delete" onClick={() => deleteRecipe(recipe.id)}>
+              <TrashIcon />
+            </button>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
