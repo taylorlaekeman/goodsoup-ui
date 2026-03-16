@@ -27,46 +27,11 @@ function App() {
 }
 
 function Goodsoup() {
-  const { data, refetch } = useQuery({
-    queryKey: ['getShoppingLists'],
-    queryFn: async () => gqlClient.request(getShoppingListsDocument),
-  });
-
-  const { mutate: createShoppingList } = useMutation({
-    mutationKey: ['createShoppingList'],
-    mutationFn: async () => gqlClient.request(createShoppingListDocument),
-    onSuccess: refetch,
-  });
-
-  const { mutate: deleteShoppingList } = useMutation({
-    mutationKey: ['deleteShoppingList'],
-    mutationFn: async ({ id }: { id: string }) =>
-      gqlClient.request(deleteShoppingListDocument, { id }),
-    onSuccess: refetch,
-  });
-
-  const [listId, setListId] = useState<string | undefined>();
-
   return (
     <>
       <h1>Goodsoup</h1>
       <main>
-        <section>
-          {listId ? (
-            <ShoppingList
-              list={data?.shoppingLists.find((list) => list.id === listId)}
-              onBack={() => setListId(undefined)}
-              onChange={() => refetch()}
-            />
-          ) : (
-            <ShoppingLists
-              lists={data?.shoppingLists}
-              onCreate={() => createShoppingList()}
-              onDelete={(id) => deleteShoppingList({ id })}
-              onSelect={setListId}
-            />
-          )}
-        </section>
+        <ShoppingLists />
         <Recipes />
         <Ingredients />
         <StoreSections />
@@ -74,66 +39,5 @@ function Goodsoup() {
     </>
   );
 }
-
-const getShoppingListsDocument = graphql(/* GraphQL */ `
-  query GetShoppingLists {
-    shoppingLists {
-      id
-      createdAt
-      updatedAt
-      name
-      recipes {
-        id
-        name
-        createdAt
-        updatedAt
-        ingredients {
-          id
-          name
-          createdAt
-          updatedAt
-          section {
-            id
-            name
-            createdAt
-            updatedAt
-          }
-        }
-      }
-      ingredients {
-        id
-        name
-        createdAt
-        updatedAt
-        section {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-      }
-    }
-  }
-`);
-
-const createShoppingListDocument = graphql(/* GraphQL */ `
-  mutation CreateShoppingList {
-    createShoppingList {
-      id
-      createdAt
-      name
-    }
-  }
-`);
-
-const deleteShoppingListDocument = graphql(/* GraphQL */ `
-  mutation DeleteShoppingList($id: ID!) {
-    deleteShoppingList(id: $id) {
-      id
-      createdAt
-      name
-    }
-  }
-`);
 
 export default App;

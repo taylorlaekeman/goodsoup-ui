@@ -1,13 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
-import { graphql } from './gql';
-import type { Recipe } from './gql/graphql';
-import { gqlClient } from './gqlClient';
 import {
   MagnifyingGlassIcon,
   PlusIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+import { graphql } from './gql';
+import type { Recipe } from './gql/graphql';
+import { gqlClient } from './gqlClient';
 
 export function RecipeList({
   onAdd = () => {

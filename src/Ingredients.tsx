@@ -1,14 +1,14 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { graphql } from './gql';
-import { gqlClient } from './gqlClient';
-import { getSectionsDocument } from './StoreSections';
 import {
   CheckIcon,
   PlusIcon,
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { graphql } from './gql';
+import { gqlClient } from './gqlClient';
+import { getSectionsDocument } from './StoreSections';
 
 export function Ingredients() {
   const { data: ingredientsData, refetch: refetchIngredients } = useQuery({
